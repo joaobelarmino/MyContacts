@@ -1,14 +1,18 @@
 import React from 'react';
+
 import {
-  Container, Header, ListContainer, Card,
+  InputSearchContainer, Container, Header, ListContainer, Card,
 } from './style';
 import arrow from '../../assets/images/arrow.svg';
 import edit from '../../assets/images/edit.svg';
 import trash from '../../assets/images/trash.svg';
 
-export default function ContactsList() {
+export default function Home() {
   return (
     <Container>
+      <InputSearchContainer>
+        <input type="text" placeholder="Pesquisar contato..." />
+      </InputSearchContainer>
       <Header>
         <strong>3 contatos</strong>
         <a href="/">Novo contato</a>
