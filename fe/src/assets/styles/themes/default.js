@@ -17,6 +17,7 @@ export default {
     gray: {
       darker: '#222',
       normal: '#BCBCBC',
+      medium: '#ccc',
       lighter: '#E6E6E6',
     },
   },

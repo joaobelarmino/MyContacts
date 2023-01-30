@@ -41,13 +41,19 @@ export const Header = styled.div`
     border: 2px solid ${({ theme }) => theme.colors.primary.main};
     padding: 8px 16px;
     border-radius: 4px;
+    transition: background 0.1s ease-in;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.primary.main};
+      color: ${({ theme }) => theme.colors.white};
+    }
   }
 `;
 
 export const ListContainer = styled.div`
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 2px solid ${({ theme }) => theme.colors.gray.normal};
+  border-top: 2px solid rgb(188, 188, 188, 0.2);
   border-radius: 2px;
 
   header {
