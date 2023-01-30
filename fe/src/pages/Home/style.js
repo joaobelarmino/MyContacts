@@ -1,5 +1,24 @@
 import styled from 'styled-components';
 
+export const InputSearchContainer = styled.div`
+  width: 100%;
+
+  input {
+    width: 100%;
+    height: 50px;
+    background-color: ${({ theme }) => theme.colors.white};
+    border: none;
+    border-radius: 25px;
+    padding: 0 16px;
+    outline: none;
+    font-size: 16px;
+
+    &::placeholder {
+      color: ${({ theme }) => theme.colors.gray.normal};
+    }
+  }
+`;
+
 export const Container = styled.div`
   margin-top: 32px;
 `;
@@ -8,6 +27,7 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 32px;
 
   strong {
     font-size: 24px;
