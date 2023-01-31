@@ -128,8 +128,6 @@ export const Card = styled.div`
       background-color: transparent;
       border: none;
       outline: none;
-      position: relative;
-      top: -1px;
     }
   }
 `;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { Input, Select, Button } from '../LayoutUtils';
-import { Form } from './style';
+import { Form, ButtonContainer } from './style';
 import FormGroup from '../FormGroup';
 
 export default function ContactForm({ buttonLabel }) {
@@ -18,13 +18,15 @@ export default function ContactForm({ buttonLabel }) {
       </FormGroup>
       <FormGroup>
         <Select>
-          <option disabled selected hidden>Categoria</option>
+          <option disabled defaultValue hidden>Categoria</option>
           <option value="0">Instagram</option>
           <option value="1">LinkedIn</option>
           <option value="2">Twitter</option>
         </Select>
       </FormGroup>
-      <Button type="button"><span>{buttonLabel}</span></Button>
+      <ButtonContainer>
+        <Button type="button"><span>{buttonLabel}</span></Button>
+      </ButtonContainer>
     </Form>
   );
 }

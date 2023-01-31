@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Input = styled.input`
   width: 100%;
@@ -46,9 +46,8 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   height: 52px;
-  margin-top: 24px;
+  padding: 16px;
   background-color: ${({ theme }) => theme.colors.primary.main};
   border-radius: 4px;
   border: none;
@@ -73,4 +72,16 @@ export const Button = styled.button`
     background-color: ${({ theme }) => theme.colors.gray.medium};
     cursor: default;
   }
+
+  ${({ theme, danger }) => danger && css`
+    background-color: ${theme.colors.danger.main};
+
+    &:hover{
+      background-color: ${theme.colors.danger.light};
+    }
+
+    &:active {
+      background-color: ${theme.colors.danger.darker};
+    }
+  `};
 `;

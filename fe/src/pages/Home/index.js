@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import {
@@ -7,10 +7,19 @@ import {
 import arrow from '../../assets/images/arrow.svg';
 import edit from '../../assets/images/edit.svg';
 import trash from '../../assets/images/trash.svg';
+import Modal from '../../components/Modal';
 
 export default function Home() {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleRemoveContact = () => {
+    setModalVisible(true);
+  };
   return (
     <Container>
+      {modalVisible && (
+        <Modal title="Tem certeza que deseja remover o contato ”João Belarmino”?" danger content="Essa ação não poderá ser desfeita!" />
+      )}
       <InputSearchContainer>
         <input type="text" placeholder="Pesquisar contato..." />
       </InputSearchContainer>
@@ -42,7 +51,7 @@ export default function Home() {
             <Link to="/edit/12">
               <img src={edit} alt="Edit" />
             </Link>
-            <button type="button">
+            <button type="button" onClick={handleRemoveContact}>
               <img src={trash} alt="Delete" />
             </button>
           </div>
