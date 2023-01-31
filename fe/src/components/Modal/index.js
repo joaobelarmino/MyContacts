@@ -22,7 +22,7 @@ export function ModalContent({
         </div>
         <Footer>
           <button type="button" className="cancel-button">Cancelar</button>
-          <Button danger={danger} type="button" className="confirm-button"><span>Deletar</span></Button>
+          <Button danger={danger} type="button"><span>Deletar</span></Button>
         </Footer>
       </Container>
     </Overlay>

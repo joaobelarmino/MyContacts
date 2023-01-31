@@ -1,6 +1,15 @@
 import styled from 'styled-components';
 
 export const Overlay = styled.div`
+  @keyframes apply-backdrop-filter {
+    0% {
+      backdrop-filter: blur(0px);
+    }
+    100% {
+      backdrop-filter: blur(3px);
+    }
+  }
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,8 +19,8 @@ export const Overlay = styled.div`
   left: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-  transition: backdrop-filter 0.3s ease-in-out;
+  backdrop-filter: blur(3px);
+  animation: apply-backdrop-filter 0.3s ease-out;
 `;
 
 export const Container = styled.div`
