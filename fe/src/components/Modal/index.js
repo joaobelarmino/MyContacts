@@ -1,10 +1,10 @@
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Overlay, Container, Footer } from './style';
 import { Button } from '../LayoutUtils';
 
 export default function Modal({ title, content, danger }) {
-  return ReactDOM.createPortal(
+  return createPortal(
     <ModalContent title={title} content={content} danger={danger} />,
     document.getElementById('modal-root'),
   );
