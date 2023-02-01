@@ -19,6 +19,11 @@ export const Input = styled.input`
   &:focus {
     border-color: ${({ theme }) => theme.colors.primary.main}
   }
+
+  ${({ theme, error }) => error && css`
+    border-color: ${theme.colors.danger.main} !important;
+    color: ${theme.colors.danger.main};
+  `}
 `;
 
 export const Select = styled.select`
