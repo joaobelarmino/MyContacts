@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import useErrors from '../../hooks/useErrors';
 import isEmailValid from '../../utils/isEmailValid';
 
 import { Input, Select, Button } from '../LayoutUtils';
@@ -11,7 +12,7 @@ export default function ContactForm({ buttonLabel }) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [category, setCategory] = useState('');
-  const [errors, setErrors] = useState([]);
+  const { setError, removeError, getErrorMessageByFieldName } = useErrors();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -21,12 +22,9 @@ export default function ContactForm({ buttonLabel }) {
     const inputValue = event.target.value;
     setName(inputValue);
     if (!inputValue) {
-      setErrors((prevState) => [
-        ...prevState,
-        { field: 'name', message: 'Nome é obrigatório.' },
-      ]);
+      setError({ field: 'name', message: 'Nome é obrigatório.' });
     } else {
-      setErrors((prevState) => prevState.filter((error) => error.field !== 'name'));
+      removeError('Nome é obrigatório.');
     }
   }
 
@@ -35,20 +33,10 @@ export default function ContactForm({ buttonLabel }) {
     setEmail(inputValue);
 
     if (inputValue && !isEmailValid(inputValue)) {
-      const errorAlreadyExists = errors.find((error) => error.message === 'Formato de E-mail inválido');
-      if (errorAlreadyExists) { return; }
-
-      setErrors((prevState) => [
-        ...prevState,
-        { field: 'email', message: 'Formato de E-mail inválido' },
-      ]);
+      setError({ field: 'email', message: 'Formato de E-mail inválido' });
     } else {
-      setErrors((prevState) => prevState.filter((error) => error.message !== 'Formato de E-mail inválido'));
+      removeError('Formato de E-mail inválido');
     }
-  }
-
-  function getErrorMessageByFieldName(fieldName) {
-    return errors.find((error) => error.field === fieldName)?.message;
   }
 
   function handleInputChange(event, setState) {
