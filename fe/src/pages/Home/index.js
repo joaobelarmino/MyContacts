@@ -8,6 +8,7 @@ import arrow from '../../assets/images/arrow.svg';
 import edit from '../../assets/images/edit.svg';
 import trash from '../../assets/images/trash.svg';
 import Modal from '../../components/Modal';
+import Loader from '../../components/Loader';
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -20,6 +21,7 @@ export default function Home() {
       {modalVisible && (
         <Modal title="Tem certeza que deseja remover o contato ”João Belarmino”?" danger content="Essa ação não poderá ser desfeita!" />
       )}
+      <Loader />
       <InputSearchContainer>
         <input type="text" placeholder="Pesquisar contato..." />
       </InputSearchContainer>

@@ -1,15 +1,15 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-export const Overlay = styled.div`
-  @keyframes apply-backdrop-filter {
+const applyBackdropFilter = keyframes`
     0% {
       backdrop-filter: blur(0px);
     }
     100% {
       backdrop-filter: blur(3px);
     }
-  }
+`;
 
+export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +20,7 @@ export const Overlay = styled.div`
   top: 0;
   background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
-  animation: apply-backdrop-filter 0.3s ease-out;
+  animation: ${applyBackdropFilter} 0.3s ease-out;
 `;
 
 export const Container = styled.div`

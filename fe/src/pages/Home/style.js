@@ -53,7 +53,7 @@ export const Header = styled.div`
 export const ListContainer = styled.div`
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 2px solid rgb(188, 188, 188, 0.2);
+  border-top: 2px solid rgba(188, 188, 188, 0.2);
   border-radius: 2px;
 
   header {
