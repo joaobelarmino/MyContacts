@@ -30,10 +30,6 @@ export default function ContactForm({ buttonLabel }) {
       return;
     }
     removeError('Escolha uma categoria');
-
-    console.log({
-      name, email, phone, category,
-    });
   }
 
   function handleNameChange(event) {
