@@ -11,6 +11,7 @@ export const Input = styled.input`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
   outline: none;
   transition: border-color 0.3s ease-in;
+  appearance: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray.normal};
@@ -37,6 +38,7 @@ export const Select = styled.select`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
   outline: none;
   transition: border-color 0.3s ease-in;
+  appearance: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray.normal};
