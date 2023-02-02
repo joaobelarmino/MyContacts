@@ -60,3 +60,6 @@ export default function Home() {
     </Container>
   );
 }
+
+fetch('http://localhost:3001/categories').then((response) => response.json()).then((response) => console.log(response))
+  .catch((error) => console.error(error));
