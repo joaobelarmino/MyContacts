@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import {
@@ -11,10 +11,21 @@ import Modal from '../../components/Modal';
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [contacts, setContacts] = useState([]);
 
-  const handleRemoveContact = () => {
+  function handleRemoveContact() {
     setModalVisible(true);
-  };
+  }
+
+  useEffect(() => {
+    fetch('http://localhost:3001/contacts')
+      .then(async (response) => {
+        const json = await response.json();
+        setContacts(json);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <Container>
       {modalVisible && (
@@ -24,7 +35,10 @@ export default function Home() {
         <input type="text" placeholder="Pesquisar contato..." />
       </InputSearchContainer>
       <Header>
-        <strong>3 contatos</strong>
+        <strong>
+          {contacts.length}
+          {contacts.lenght !== 1 ? ' contatos' : ' contato'}
+        </strong>
         <Link to="/new">Novo contato</Link>
       </Header>
       <ListContainer>
@@ -34,32 +48,30 @@ export default function Home() {
             <img src={arrow} alt="Arrow of current sort" />
           </button>
         </header>
-
-        <Card>
-          <div className="contact">
-            <div className="contact__heading">
-              <strong>João Belarmino</strong>
-              <small>Instagram</small>
+        {contacts.map((contact) => (
+          <Card key={contact.id}>
+            <div className="contact">
+              <div className="contact__heading">
+                <strong>{contact.name}</strong>
+                {contact.category_name && <small>{contact.category_name}</small>}
+              </div>
+              <div className="contact__info">
+                <span>{contact.email}</span>
+                <span>{contact.phone}</span>
+              </div>
             </div>
-            <div className="contact__info">
-              <span>joao.belarmino.silva01@gmail.com</span>
-              <span>(11) 98478-1184</span>
-            </div>
-          </div>
 
-          <div className="actions">
-            <Link to="/edit/12">
-              <img src={edit} alt="Edit" />
-            </Link>
-            <button type="button" onClick={handleRemoveContact}>
-              <img src={trash} alt="Delete" />
-            </button>
-          </div>
-        </Card>
+            <div className="actions">
+              <Link to={`/edit/${contact.id}`}>
+                <img src={edit} alt="Edit" />
+              </Link>
+              <button type="button" onClick={handleRemoveContact}>
+                <img src={trash} alt="Delete" />
+              </button>
+            </div>
+          </Card>
+        ))}
       </ListContainer>
     </Container>
   );
 }
-
-fetch('http://localhost:3001/categories').then((response) => response.json()).then((response) => console.log(response))
-  .catch((error) => console.error(error));
