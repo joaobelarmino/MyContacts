@@ -7,7 +7,7 @@ class ContactRepository {
       select con.*, cat.name as category_name
       from contacts con
       left join categories cat on con.category_id = cat.id
-      order by con.name, cat.name ${direction}
+      order by con.name ${direction}
     `);
 
     return rows;
