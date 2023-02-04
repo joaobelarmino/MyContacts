@@ -28,6 +28,9 @@ export const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 32px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(188, 188, 188, 0.2);
 
   strong {
     font-size: 24px;
@@ -51,9 +54,6 @@ export const Header = styled.div`
 `;
 
 export const ListHeader = styled.div`
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 2px solid rgba(188, 188, 188, 0.2);
   border-radius: 2px;
 
   margin-bottom: 8px;
