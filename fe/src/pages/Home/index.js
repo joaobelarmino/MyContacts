@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import delay from '../../utils/delay';
 
 import Loader from '../../components/Loader';
 import {
@@ -10,6 +9,7 @@ import arrow from '../../assets/images/arrow.svg';
 import edit from '../../assets/images/edit.svg';
 import trash from '../../assets/images/trash.svg';
 import Modal from '../../components/Modal';
+import ContactsService from '../../services/ContactsService';
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -21,11 +21,8 @@ export default function Home() {
     async function loadingContacts() {
       setIsLoading(true);
       try {
-        const result = await fetch(`http://localhost:3001/contacts?order=${orderList}`);
-        await delay(1000);
-
-        const json = await result.json();
-        setContacts(json);
+        const contactsList = await ContactsService.listingContacts(orderList);
+        setContacts(contactsList);
       } catch (error) {
         console.log(error);
       } finally {
