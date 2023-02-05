@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-
 import { Link } from 'react-router-dom';
+import delay from '../../utils/delay';
+
+import Loader from '../../components/Loader';
 import {
   InputSearchContainer, Container, Header, ListHeader, Card,
 } from './style';
@@ -13,6 +15,20 @@ export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [orderList, setOrderList] = useState('asc');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    fetch(`http://localhost:3001/contacts?order=${orderList}`)
+      .then(async (response) => {
+        await delay(3000);
+        const json = await response.json();
+        setContacts(json);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
+  }, [orderList]);
 
   function handleToggleOrderList() {
     setOrderList((prevState) => (prevState === 'desc' ? 'asc' : 'desc'));
@@ -22,17 +38,9 @@ export default function Home() {
     setModalVisible(true);
   }
 
-  useEffect(() => {
-    fetch(`http://localhost:3001/contacts?order=${orderList}`)
-      .then(async (response) => {
-        const json = await response.json();
-        setContacts(json);
-      })
-      .catch((error) => console.error(error));
-  }, [orderList]);
-
   return (
     <Container>
+      <Loader isLoading={isLoading} />
       {modalVisible && (
         <Modal title="Tem certeza que deseja remover o contato ”João Belarmino”?" danger content="Essa ação não poderá ser desfeita!" />
       )}
