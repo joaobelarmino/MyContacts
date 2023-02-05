@@ -18,16 +18,21 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
+    async function loadingContacts() {
+      setIsLoading(true);
+      try {
+        const result = await fetch(`http://localhost:3001/contacts?order=${orderList}`);
+        await delay(1000);
 
-    fetch(`http://localhost:3001/contacts?order=${orderList}`)
-      .then(async (response) => {
-        await delay(3000);
-        const json = await response.json();
+        const json = await result.json();
         setContacts(json);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setIsLoading(false));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadingContacts();
   }, [orderList]);
 
   function handleToggleOrderList() {
