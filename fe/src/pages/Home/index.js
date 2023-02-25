@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import React, { useEffect, useState, useMemo } from 'react';
 
-=======
-import React, { useEffect, useState } from 'react';
->>>>>>> ee5dd8b6656a7f44e6f1895c81b092e38e3df3d1
 import { Link } from 'react-router-dom';
 
 import Loader from '../../components/Loader';
