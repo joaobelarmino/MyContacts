@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import React, { useEffect, useState, useMemo } from 'react';
 
+=======
+import React, { useEffect, useState } from 'react';
+>>>>>>> ee5dd8b6656a7f44e6f1895c81b092e38e3df3d1
 import { Link } from 'react-router-dom';
+
+import Loader from '../../components/Loader';
 import {
   InputSearchContainer, Container, Header, ListHeader, Card,
 } from './style';
@@ -8,6 +14,7 @@ import arrow from '../../assets/images/arrow.svg';
 import edit from '../../assets/images/edit.svg';
 import trash from '../../assets/images/trash.svg';
 import Modal from '../../components/Modal';
+import ContactsService from '../../services/ContactsService';
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -15,13 +22,21 @@ export default function Home() {
   const [orderList, setOrderList] = useState('asc');
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    fetch(`http://localhost:3001/contacts?order=${orderList}`)
-      .then(async (response) => {
-        const json = await response.json();
-        setContacts(json);
-      })
-      .catch((error) => new Error(error));
+    async function loadingContacts() {
+      setIsLoading(true);
+      try {
+        const contactsList = await ContactsService.listingContacts(orderList);
+        setContacts(contactsList);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadingContacts();
   }, [orderList]);
 
   const filteredContacts = useMemo(() => contacts.filter((contact) => (
@@ -42,6 +57,7 @@ export default function Home() {
 
   return (
     <Container>
+      <Loader isLoading={isLoading} />
       {modalVisible && (
         <Modal title="Tem certeza que deseja remover o contato ”João Belarmino”?" danger content="Essa ação não poderá ser desfeita!" />
       )}
