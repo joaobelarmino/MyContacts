@@ -25,7 +25,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ hasError }) => (hasError ? 'flex-end' : 'space-between')};
   align-items: center;
   margin-top: 32px;
   margin-bottom: 16px;
@@ -132,5 +132,25 @@ export const Card = styled.div`
       border: none;
       outline: none;
     }
+  }
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  gap: 24px;
+
+  .error-details {
+    strong {
+      color: ${({ theme }) => theme.colors.danger.main};
+      font-family: 'Sora', sans-serif;
+      font-size: 22px;
+      line-height: 110%;
+      display: block;
+    }
+
+    button {
+      margin-top: 8px;
+    }
+
   }
 `;

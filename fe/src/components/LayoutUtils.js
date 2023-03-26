@@ -65,12 +65,9 @@ export const Button = styled.button`
   border: none;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
   transition: background 0.1s ease-in;
-
-  span {
-    font-size: 16px;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.white};
-  }
+  font-size: 16px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.white};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.primary.light};
