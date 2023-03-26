@@ -1,16 +1,20 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, {
+  useEffect, useState, useMemo, useCallback,
+} from 'react';
 
 import { Link } from 'react-router-dom';
 
 import Loader from '../../components/Loader';
 import {
-  InputSearchContainer, Container, Header, ListHeader, Card,
+  InputSearchContainer, Container, Header, ListHeader, Card, ErrorContainer,
 } from './style';
 import arrow from '../../assets/images/arrow.svg';
 import edit from '../../assets/images/edit.svg';
 import trash from '../../assets/images/trash.svg';
+import sad from '../../assets/images/sad.svg';
 import Modal from '../../components/Modal';
 import ContactsService from '../../services/ContactsService';
+import { Button } from '../../components/LayoutUtils';
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,21 +23,24 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  const loadingContacts = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const contactsList = await ContactsService.listingContacts(orderList);
+      setHasError(false);
+      setContacts(contactsList);
+    } catch (error) {
+      setHasError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [orderList]);
 
   useEffect(() => {
-    async function loadingContacts() {
-      setIsLoading(true);
-      try {
-        const contactsList = await ContactsService.listingContacts(orderList);
-        setContacts(contactsList);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
     loadingContacts();
-  }, [orderList]);
+  }, [loadingContacts]);
 
   const filteredContacts = useMemo(() => contacts.filter((contact) => (
     contact.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -51,6 +58,10 @@ export default function Home() {
     setModalVisible(true);
   }
 
+  function handleTryAgain() {
+    loadingContacts();
+  }
+
   return (
     <Container>
       <Loader isLoading={isLoading} />
@@ -60,44 +71,59 @@ export default function Home() {
       <InputSearchContainer>
         <input type="text" value={searchTerm} placeholder="Pesquisar contato..." onChange={handleSearchContact} />
       </InputSearchContainer>
-      <Header>
-        <strong>
-          {filteredContacts.length}
-          {filteredContacts.lenght !== 1 ? ' contatos' : ' contato'}
-        </strong>
+      <Header hasError={hasError}>
+        {!hasError && (
+          <strong>
+            {filteredContacts.length}
+            {filteredContacts.lenght !== 1 ? ' contatos' : ' contato'}
+          </strong>
+        )}
         <Link to="/new">Novo contato</Link>
       </Header>
-      {filteredContacts.length > 1 && (
-        <ListHeader orderList={orderList}>
-          <button type="button" className="sort-button" onClick={handleToggleOrderList}>
-            <span>Nome</span>
-            <img src={arrow} alt="Arrow of current sort" />
-          </button>
-        </ListHeader>
+      {hasError && (
+        <ErrorContainer>
+          <img src={sad} alt="sad face" />
+          <div className="error-details">
+            <strong>Ocorreu um erro ao obter os seus contatos!</strong>
+            <Button type="button" onClick={handleTryAgain}>Tentar novamente</Button>
+          </div>
+        </ErrorContainer>
       )}
-      {filteredContacts.map((contact) => (
-        <Card key={contact.id}>
-          <div className="contact">
-            <div className="contact__heading">
-              <strong>{contact.name}</strong>
-              {contact.category_name && <small>{contact.category_name}</small>}
-            </div>
-            <div className="contact__info">
-              <span>{contact.email}</span>
-              <span>{contact.phone}</span>
-            </div>
-          </div>
+      {!hasError && (
+        <>
+          {filteredContacts.length > 1 && (
+            <ListHeader orderList={orderList}>
+              <button type="button" className="sort-button" onClick={handleToggleOrderList}>
+                <span>Nome</span>
+                <img src={arrow} alt="Arrow of current sort" />
+              </button>
+            </ListHeader>
+          )}
 
-          <div className="actions">
-            <Link to={`/edit/${contact.id}`}>
-              <img src={edit} alt="Edit" />
-            </Link>
-            <button type="button" onClick={handleRemoveContact}>
-              <img src={trash} alt="Delete" />
-            </button>
-          </div>
-        </Card>
-      ))}
+          {filteredContacts.map((contact) => (
+            <Card key={contact.id}>
+              <div className="contact">
+                <div className="contact__heading">
+                  <strong>{contact.name}</strong>
+                  {contact.category_name && <small>{contact.category_name}</small>}
+                </div>
+                <div className="contact__info">
+                  <span>{contact.email}</span>
+                  <span>{contact.phone}</span>
+                </div>
+              </div>
+              <div className="actions">
+                <Link to={`/edit/${contact.id}`}>
+                  <img src={edit} alt="Edit" />
+                </Link>
+                <button type="button" onClick={handleRemoveContact}>
+                  <img src={trash} alt="Delete" />
+                </button>
+              </div>
+            </Card>
+          ))}
+        </>
+      )}
     </Container>
   );
 }
