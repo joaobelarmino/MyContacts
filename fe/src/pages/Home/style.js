@@ -25,7 +25,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  justify-content: ${({ hasError }) => (hasError ? 'flex-end' : 'space-between')};
+  justify-content: ${({ justifyContent }) => justifyContent};
   align-items: center;
   margin-top: 32px;
   margin-bottom: 16px;
@@ -152,5 +152,39 @@ export const ErrorContainer = styled.div`
       margin-top: 8px;
     }
 
+  }
+`;
+
+export const EmptyListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  p {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 8px;
+    max-width: 402px;
+    color: ${({ theme }) => theme.colors.gray.normal};
+
+    strong {
+      color: ${({ theme }) => theme.colors.primary.main}
+    }
+  }
+`;
+
+export const SearchNotFoundContainer = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  word-break: break-word;
+  color: ${({ theme }) => theme.colors.gray.normal};
+
+  img {
+    align-self: flex-start;
+  }
+
+  span {
+    margin-left: 24px;
   }
 `;
