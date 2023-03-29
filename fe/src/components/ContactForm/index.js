@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useErrors from '../../hooks/useErrors';
 import isEmailValid from '../../utils/isEmailValid';
+import CategoriesService from '../../services/CategoriesService';
 
 import { Input, Select, Button } from '../LayoutUtils';
 import { Form, ButtonContainer } from './style';
@@ -13,7 +14,9 @@ export default function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [category, setCategory] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const {
     setError,
     removeError,
@@ -21,16 +24,20 @@ export default function ContactForm({ buttonLabel }) {
     errors,
   } = useErrors();
 
-  const isFormValid = (name && errors.length === 0 && category);
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (!category) {
-      setError({ field: 'category', message: 'Escolha uma categoria' });
-      return;
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const listCategories = await CategoriesService.listingCategories();
+        setCategories(listCategories);
+      } catch {} finally {
+        setIsLoadingCategories(false);
+      }
     }
-    removeError('Escolha uma categoria');
-  }
+
+    loadCategories();
+  }, []);
+
+  const isFormValid = (name && errors.length === 0);
 
   function handleNameChange(event) {
     const inputValue = event.target.value;
@@ -62,7 +69,7 @@ export default function ContactForm({ buttonLabel }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit} noValidate>
+    <Form noValidate>
       <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
           type="text"
@@ -90,16 +97,18 @@ export default function ContactForm({ buttonLabel }) {
           maxLength="15"
         />
       </FormGroup>
-      <FormGroup error={getErrorMessageByFieldName('category')}>
+      <FormGroup isLoading={isLoadingCategories}>
         <Select
-          value={category}
-          onChange={(event) => handleInputChange(event.target.value, setCategory)}
-          error={Boolean(getErrorMessageByFieldName('category'))}
+          value={categoryId}
+          onChange={(event) => handleInputChange(event.target.value, setCategoryId)}
+          disabled={isLoadingCategories}
         >
-          <option defaultValue hidden>Categoria</option>
-          <option value="Instagram">Instagram</option>
-          <option value="LinkedIn">LinkedIn</option>
-          <option value="Twitter">Twitter</option>
+          <option defaultValue hidden>Sem categoria</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </Select>
       </FormGroup>
       <ButtonContainer>
@@ -108,7 +117,7 @@ export default function ContactForm({ buttonLabel }) {
           <span className="info-to-submit">
             <img src={infoIcon} alt="Info icon" width="24" />
             {' '}
-            Para enviar o formulário, por favor, preencher o campo Nome e Categoria, ao menos.
+            Para enviar o formulário, por favor, preencher o campo Nome, ao menos.
             Caso insira um e-mail, é necessário que seja um e-mail válido.
           </span>
         )}
