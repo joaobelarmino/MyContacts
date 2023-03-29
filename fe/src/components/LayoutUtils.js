@@ -48,10 +48,10 @@ export const Select = styled.select`
     border-color: ${({ theme }) => theme.colors.primary.main}
   }
 
-  ${({ theme, error }) => error && css`
-    border-color: ${theme.colors.danger.main} !important;
-    color: ${theme.colors.danger.main};
-  `}
+  &[disabled] {
+    border-color: ${({ theme }) => theme.colors.gray.medium};
+    background-color: ${({ theme }) => theme.colors.gray.lighter};
+  }
 `;
 
 export const Button = styled.button`
